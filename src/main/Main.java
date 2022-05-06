@@ -1,5 +1,6 @@
 package main;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -39,24 +40,39 @@ public class Main {
 		}while(!stop);
 		
 		boolean dfsRslt=dfsR(grph);
+		if(dfsRslt) {
+			System.out.println("Es fuertemente conexo");
+		}else {
+			System.out.println("No es fuertemente conexo");
+		}
 		
 	}
 	
 	public static boolean dfsR(Graph<String> graph) {
 		Set<String> keys=graph.getKeys();
-		boolean[] bls=new boolean[keys.size()];
-		int i=0;
+		HashMap<String, Boolean> vis=new HashMap<>();
 		for(String key:keys) {
-			bls[i]=dfsI(graph.getNode(key));
-			i++;
+			vis.put(key, false);
 		}
-		return false;
+		for(String key:keys) {
+			vis.replaceAll((ke,itm)-> itm=false);
+			dfsI(graph.getNode(key), vis);
+			for(String k:keys) {
+				if(!vis.get(graph.getNode(k).getItem())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
-	public static boolean dfsI(Node<String> nd) {
-		
-		//Dfs recursivo
-		return false;
+	public static void dfsI(Node<String> nd, HashMap<String, Boolean> vis) {
+		if(vis.get(nd.getItem())) {
+			return;
+		}
+		vis.put(nd.getItem(), true);
+		for(Node<String> node:nd.getNghbr()) {
+			dfsI(node, vis);
+		}
 	}
-
 }

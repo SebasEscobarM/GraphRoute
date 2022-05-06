@@ -23,4 +23,12 @@ public class Node<T> {
 	public void addNghbr(Node<T> node) {
 		nghbr.add(node);
 	}
+
+	public ArrayList<Node<T>> getNghbr() {
+		return nghbr;
+	}
+
+	public void setNghbr(ArrayList<Node<T>> nghbr) {
+		this.nghbr = nghbr;
+	}
 }
