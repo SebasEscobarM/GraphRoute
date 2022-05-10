@@ -1,6 +1,8 @@
 package main;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -46,6 +48,13 @@ public class Main {
 			System.out.println("No es fuertemente conexo");
 		}
 		
+		boolean bfsRslt=bfsResult(grph);
+		if(bfsRslt) {
+			System.out.println("Es fuertemente conexo");
+		}else {
+			System.out.println("No es fuertemente conexo");
+		}
+		
 	}
 	
 	public static boolean dfsR(Graph<String> graph) {
@@ -75,4 +84,32 @@ public class Main {
 			dfsI(node, vis);
 		}
 	}
+	
+	public static boolean bfsResult(Graph<String> graph) {
+		Set<String> keys=graph.getKeys();
+		for(String key:keys) {
+			bfsIterative(graph.getNode(key));
+			return false;
+		}
+		return true;
+	}
+	
+	@SuppressWarnings({ "unlikely-arg-type", "rawtypes" })
+	public static boolean bfsIterative(Node<String> node) {
+		Queue<Node> queueNodes = new LinkedList<Node>();
+		node.setVisited(true);
+		queueNodes.add(node);
+		while(!queueNodes.isEmpty()) {
+			Node actualNode = queueNodes.remove();
+			System.out.println(actualNode);
+			for(Node nodes : actualNode.getNghbr()) {
+				if(!nodes.isVisited()) {
+					nodes.setVisited(true);
+					queueNodes.add(nodes);
+				}
+			}
+		}
+	}
+	
+	
 }

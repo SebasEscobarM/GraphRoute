@@ -1,11 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Node<T> {
 	
 	T item;
-	ArrayList<Node<T>> nghbr;
+	List<Node<T>> nghbr;
+	private boolean visited;
 	
 	public Node(T item){
 		this.item=item;
@@ -24,11 +26,19 @@ public class Node<T> {
 		nghbr.add(node);
 	}
 
-	public ArrayList<Node<T>> getNghbr() {
+	public List<Node<T>> getNghbr() {
 		return nghbr;
 	}
 
-	public void setNghbr(ArrayList<Node<T>> nghbr) {
+	public void setNghbr(List<Node<T>> nghbr) {
 		this.nghbr = nghbr;
+	}
+	
+	public boolean isVisited() {
+		return visited;
+	}
+	
+	public void setVisited(boolean visited) {
+		this.visited = visited;
 	}
 }
