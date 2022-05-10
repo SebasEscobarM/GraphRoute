@@ -7,7 +7,6 @@ public class Node<T> {
 	
 	T item;
 	List<Node<T>> nghbr;
-	private boolean visited;
 	
 	public Node(T item){
 		this.item=item;
@@ -32,13 +31,5 @@ public class Node<T> {
 
 	public void setNghbr(List<Node<T>> nghbr) {
 		this.nghbr = nghbr;
-	}
-	
-	public boolean isVisited() {
-		return visited;
-	}
-	
-	public void setVisited(boolean visited) {
-		this.visited = visited;
 	}
 }

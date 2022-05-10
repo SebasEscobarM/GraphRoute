@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 import model.Graph;
 import model.Node;
@@ -41,6 +42,7 @@ public class Main {
 			
 		}while(!stop);
 		
+		System.out.println("DFS");
 		boolean dfsRslt=dfsR(grph);
 		if(dfsRslt) {
 			System.out.println("Es fuertemente conexo");
@@ -48,6 +50,7 @@ public class Main {
 			System.out.println("No es fuertemente conexo");
 		}
 		
+		System.out.println("BFS");
 		boolean bfsRslt=bfsResult(grph);
 		if(bfsRslt) {
 			System.out.println("Es fuertemente conexo");
@@ -55,8 +58,49 @@ public class Main {
 			System.out.println("No es fuertemente conexo");
 		}
 		
+		System.out.println("Dfs Iterativo");
+		boolean dfsItRslt=dfsIterative(grph);
+		if(dfsItRslt) {
+			System.out.println("Es fuertemente conexo");
+		}else {
+			System.out.println("No es fuertemente conexo");
+		}
+		
 	}
 	
+	//Disparador de DFS iterativo
+	public static boolean dfsIterative(Graph<String> graph) {
+		Set<String> keys=graph.getKeys();
+		HashMap<String, Boolean> vis=new HashMap<>();
+		for(String key:keys) {
+			vis.put(key, false);
+		}
+		for(String key:keys) {
+			vis.replaceAll((ke,itm)-> itm=false);
+			dfsIterative(graph.getNode(key), vis);
+			for(String k:keys) {
+				if(!vis.get(graph.getNode(k).getItem())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	//DFS iterativo
+	public static void dfsIterative(Node<String> nd, HashMap<String, Boolean> vis) {
+		Stack<Node<String>> toVisit=new Stack<Node<String>>();
+		toVisit.add(nd);
+		do {
+			Node<String> actNd=toVisit.pop();
+			if(!vis.get(actNd.getItem())) {
+				toVisit.addAll(actNd.getNghbr());
+				vis.put(actNd.getItem(), true);
+			}
+		}while(!toVisit.empty());
+	}
+	
+	//Disparador de DFS recursivo
 	public static boolean dfsR(Graph<String> graph) {
 		Set<String> keys=graph.getKeys();
 		HashMap<String, Boolean> vis=new HashMap<>();
@@ -75,6 +119,7 @@ public class Main {
 		return true;
 	}
 	
+	//DFS recursivo
 	public static void dfsI(Node<String> nd, HashMap<String, Boolean> vis) {
 		if(vis.get(nd.getItem())) {
 			return;
@@ -84,27 +129,36 @@ public class Main {
 			dfsI(node, vis);
 		}
 	}
-	
+
+	//Disparador de BFS
 	public static boolean bfsResult(Graph<String> graph) {
 		Set<String> keys=graph.getKeys();
+		HashMap<String, Boolean> vis=new HashMap<>();
 		for(String key:keys) {
-			bfsIterative(graph.getNode(key));
-			return false;
+			vis.put(key, false);
+		}
+		for(String key:keys) {
+			vis.replaceAll((ke,itm)-> itm=false);
+			bfsIterative(graph.getNode(key), vis);
+			for(String k:keys) {
+				if(!vis.get(graph.getNode(k).getItem())) {
+					return false;
+				}
+			}
 		}
 		return true;
 	}
 	
-	@SuppressWarnings({ "unlikely-arg-type", "rawtypes" })
-	public static boolean bfsIterative(Node<String> node) {
-		Queue<Node> queueNodes = new LinkedList<Node>();
-		node.setVisited(true);
+	//BFS
+	public static void bfsIterative(Node<String> node, HashMap<String, Boolean> vis) {
+		Queue<Node<String>> queueNodes = new LinkedList<Node<String>>();
+		vis.put(node.getItem(), true);
 		queueNodes.add(node);
 		while(!queueNodes.isEmpty()) {
-			Node actualNode = queueNodes.remove();
-			System.out.println(actualNode);
-			for(Node nodes : actualNode.getNghbr()) {
-				if(!nodes.isVisited()) {
-					nodes.setVisited(true);
+			Node<String> actualNode = queueNodes.remove();
+			for(Node<String> nodes : actualNode.getNghbr()) {
+				if(!vis.get(nodes.getItem())) {
+					vis.put(nodes.getItem(), true);
 					queueNodes.add(nodes);
 				}
 			}
